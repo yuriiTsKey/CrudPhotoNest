@@ -1,0 +1,45 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Mutation {
+  changePhotoData(changePhoto: PhotoUpdateDtoReq!): Photo!
+  createPhoto(createPhoto: PhotoCreateDtoReq!): PhotoDtoRes!
+  deletePhotoById(id: Float!): Photo!
+  findPhotoById(id: Float!): Photo!
+}
+
+type Photo {
+  data: String!
+  id: ID!
+  name: String!
+  photo_link: String!
+  text: String!
+}
+
+input PhotoCreateDtoReq {
+  data: String!
+  name: String!
+  photo_link: String!
+  text: String!
+}
+
+type PhotoDtoRes {
+  data: String!
+  id: Float!
+  name: String!
+  photo_link: String!
+  text: String!
+}
+
+input PhotoUpdateDtoReq {
+  data: String!
+  id: String!
+  name: String!
+  photo_link: String!
+  text: String!
+}
+
+type Query {
+  findAllPhoto: [Photo!]!
+}
