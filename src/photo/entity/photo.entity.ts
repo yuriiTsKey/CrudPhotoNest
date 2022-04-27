@@ -7,22 +7,24 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 export class Photo {
   @Field(() => ID)
   @PrimaryGeneratedColumn('increment', { name: 'userid' })
-  id: number;
+  public id: number;
 
   @Field(() => String)
   @Column()
-  name: string;
+  public name: string;
 
   @Field(() => String)
   @Column({ nullable: true })
-  text: string;
+  public text: string;
 
   @Field(() => String)
   @Column({ nullable: true })
-  data: string;
+  public data: string;
 
-  @Field()
-  @Length(6, 200, { message: 'photoLink should be more then 6 character' })
+  @Field(() => String)
   @Column({ nullable: true })
-  photo_link: string;
+  public photo_link: string;
+
+  @Column({ nullable: true })
+  public key: string;
 }

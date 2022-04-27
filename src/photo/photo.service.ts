@@ -1,24 +1,20 @@
-import {
-  ForbiddenException,
-  Inject,
-  Injectable,
-  HttpCode,
-  HttpException,
-  HttpStatus,
-} from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Connection, getConnection, getManager, Repository } from 'typeorm';
-import { JwtService } from '@nestjs/jwt';
+import { getConnection, getManager, Repository } from 'typeorm';
 
-import { Token } from 'graphql';
-import { env } from 'process';
 import { Photo } from './entity/photo.entity';
 import { PhotoCreateDtoReq } from './dto/photo.create.req.dto';
 import { PhotoUpdateDtoReq } from './dto/photo.update.req.dto';
+import { S3 } from 'aws-sdk';
+import { ConfigService } from '@nestjs/config';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class PhotoService {
-  constructor(@InjectRepository(Photo) private photoEntity: Repository<Photo>) {}
+  constructor(
+    @InjectRepository(Photo) private photoEntity: Repository<Photo>,
+    private readonly configService: ConfigService
+  ) {}
 
   async createPhoto(createPhoto: PhotoCreateDtoReq): Promise<Photo> {
     if (!createPhoto) {
@@ -69,5 +65,16 @@ export class PhotoService {
 
   async findAll(): Promise<Photo[]> {
     return await this.photoEntity.find();
+  }
+
+  async uploadPublicFile(dataBuffer: Buffer, filename: string) {
+    const s3 = new S3();
+    const uploadResult = await s3
+      .upload({
+        Bucket: this.configService.get('AWS_PUBLIC_BUCKET_NAME'),
+        Body: dataBuffer,
+        Key: `${uuid()}-${filename}`,
+      })
+      .promise();
   }
 }
