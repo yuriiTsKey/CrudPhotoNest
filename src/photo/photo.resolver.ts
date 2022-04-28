@@ -1,4 +1,4 @@
-import { Inject, UseInterceptors, HttpException, HttpStatus } from '@nestjs/common';
+import { Inject, HttpException, HttpStatus } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import { PhotoService } from './photo.service';
@@ -13,6 +13,8 @@ import { FileService } from './file.service';
 import { streamToBuffer } from '@jorgeferrero/stream-to-buffer';
 import { S3 } from 'aws-sdk';
 import { randomUUID } from 'crypto';
+import { UserUploadProfilePicType } from './dto/user.type';
+import { number } from 'joi';
 
 @Resolver(() => Photo)
 export class PhotoResolver {
@@ -67,15 +69,25 @@ export class PhotoResolver {
   //       .on('error', () => reject(false))
   //   );
   // }
+  @Mutation(() => Number)
+  async twoParams(
+    @Args('createPhoto', { type: () => Number })
+    createPhoto: number,
+    @Args('create2', { type: () => Number })
+    create2: number,
+    @Args('third', { type: () => Number })
+    third: number
+  ): Promise<number> {
+    const sum = createPhoto + create2 + third;
+    return sum;
+  }
 
   //Test 2
   @Mutation(() => Boolean)
   async addPicture(
     @Args({ name: 'picture', type: () => GraphQLUpload })
     picture: FileUpload
-  ): Promise<any> {
-    // console.log(picture.createReadStream);
-
+  ): Promise<boolean> {
     try {
       await this.fileService.uploadingPhoto(picture.createReadStream(), picture.filename);
     } catch (err) {

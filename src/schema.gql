@@ -8,6 +8,7 @@ type Mutation {
   createPhoto(createPhoto: PhotoCreateDtoReq!): PhotoDtoRes!
   deletePhotoById(id: Float!): Photo!
   findPhotoById(id: Float!): Photo!
+  twoParams(create2: Float!, createPhoto: Float!, third: Float!): Float!
 }
 
 type Photo {

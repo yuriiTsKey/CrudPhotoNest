@@ -6,7 +6,6 @@ import { Photo } from './photo/entity/photo.entity';
 import { PhotoModule } from './photo/photo.module';
 import { join } from 'path';
 import Joi from 'joi';
-// import { ImageUpload } from './photo/scalar/Upload.scalar';
 
 @Module({
   imports: [
@@ -45,6 +44,5 @@ import Joi from 'joi';
       }),
     }),
   ],
-  // providers: [ImageUpload],
 })
 export class AppModule {}

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { rejects } from 'assert';
 import { S3 } from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 
@@ -27,6 +26,7 @@ export class FileService {
       );
       reject('zalupa');
     });
+
     myPromise
       .then(res => {
         console.log(res);
@@ -53,11 +53,36 @@ export class FileService {
 
   public async deletePhoto(key: string) {
     const s3 = new S3();
-    return await s3
-      .deleteObject({
-        Bucket: `${process.env.AWS_PUBLIC_BUCKET_NAME}`,
-        Key: key,
+
+    const myPromise = new Promise((resolve, reject) => {
+      resolve(
+        s3.deleteObject(
+          {
+            Bucket: `${process.env.AWS_PUBLIC_BUCKET_NAME}`,
+            Key: key,
+          },
+          (err, data) => {
+            if (err) {
+              throw err;
+            }
+            console.log(data);
+          }
+        )
+      );
+      reject('pzd');
+    });
+
+    myPromise
+      .then(res => {
+        console.log(res);
       })
-      .promise();
+      .catch(r => console.log(r));
+
+    // return s3
+    //   .deleteObject({
+    //     Bucket: `${process.env.AWS_PUBLIC_BUCKET_NAME}`,
+    //     Key: key,
+    //   })
+    //   .promise();
   }
 }
