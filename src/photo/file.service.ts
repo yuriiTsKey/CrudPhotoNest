@@ -9,38 +9,46 @@ export class FileService {
     const s3 = new S3();
 
     const myPromise = new Promise((resolve, reject) => {
-      s3.upload(
-        {
-          Bucket: `${process.env.AWS_PUBLIC_BUCKET_NAME}`,
-          Body: dataBuffer,
-          Key: `${uuid()}-${filename}`,
-        },
-        {},
-        (err, data) => {
-          if (err) {
-            throw err;
+      resolve(
+        s3.upload(
+          {
+            Bucket: `${process.env.AWS_PUBLIC_BUCKET_NAME}`,
+            Body: dataBuffer,
+            Key: `${uuid()}-${filename}`,
+          },
+          {},
+          (err, data) => {
+            if (err) {
+              throw err;
+            }
+            console.log(data);
           }
-          console.log(data);
-        }
+        )
       );
+      reject('zalupa');
     });
+    myPromise
+      .then(res => {
+        console.log(res);
+      })
+      .catch(r => console.log(r));
 
-    return await s3
-      .upload(
-        {
-          Bucket: `${process.env.AWS_PUBLIC_BUCKET_NAME}`,
-          Body: dataBuffer,
-          Key: `${uuid()}-${filename}`,
-        },
-        {},
-        (err, data) => {
-          if (err) {
-            throw err;
-          }
-          console.log(data);
-        }
-      )
-      .promise();
+    // return s3
+    //   .upload(
+    //     {
+    //       Bucket: `${process.env.AWS_PUBLIC_BUCKET_NAME}`,
+    //       Body: dataBuffer,
+    //       Key: `${uuid()}-${filename}`,
+    //     },
+    //     {},
+    //     (err, data) => {
+    //       if (err) {
+    //         throw err;
+    //       }
+    //       console.log(data);
+    //     }
+    //   )
+    //   .promise();
   }
 
   public async deletePhoto(key: string) {
