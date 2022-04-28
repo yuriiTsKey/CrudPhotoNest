@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Length } from 'class-validator';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -7,24 +6,21 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 export class Photo {
   @Field(() => ID)
   @PrimaryGeneratedColumn('increment', { name: 'userid' })
-  public id: number;
+  id: number;
 
   @Field(() => String)
   @Column()
-  public name: string;
+  name?: string;
 
   @Field(() => String)
   @Column({ nullable: true })
-  public text: string;
+  text?: string;
 
+  @Column({ nullable: true })
   @Field(() => String)
-  @Column({ nullable: true })
-  public data: string;
+  url: string;
 
+  @Column({ nullable: true })
   @Field(() => String)
-  @Column({ nullable: true })
-  public photo_link: string;
-
-  @Column({ nullable: true })
-  public key: string;
+  key: string;
 }

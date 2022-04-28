@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class PhotoDtoRes {
-  @Field()
+  @Field(() => Number)
   id: number;
 
   @Field(() => String)
@@ -12,8 +12,5 @@ export class PhotoDtoRes {
   text: string;
 
   @Field(() => String)
-  data: string;
-
-  @Field(() => String)
-  photo_link: string;
+  url: string;
 }

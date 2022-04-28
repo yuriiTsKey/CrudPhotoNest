@@ -9,8 +9,5 @@ export class PhotoCreateDtoReq {
   text: string;
 
   @Field(() => String)
-  data: string;
-
-  @Field(() => String)
-  photo_link: string;
+  url: string;
 }
